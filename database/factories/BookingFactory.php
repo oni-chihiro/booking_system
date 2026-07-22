@@ -22,7 +22,7 @@ class BookingFactory extends Factory
 
             'customer_name' => fake()->name(),
 
-            'booking_id' => strtoupper(fake()->bothify('BK####')),
+            'booking_id' => strtoupper(fake()->unique()->bothify('BK####')),
 
             'number_of_persons' => fake()->numberBetween(1, 20),
 
