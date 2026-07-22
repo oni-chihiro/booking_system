@@ -15,14 +15,21 @@ class BookingFactory extends Factory
      *
      * @return array<string, mixed>
      */
-   public function definition(): array
+    public function definition(): array
     {
         return [
             'event_id' => \App\Models\Event::factory(),
+
             'customer_name' => fake()->name(),
+
             'booking_id' => strtoupper(fake()->bothify('BK####')),
+
             'number_of_persons' => fake()->numberBetween(1, 20),
+
             'confirmation_file' => 'sample.pdf',
+
+            // ADD THIS
+            'booking_time' => fake()->dateTime(),
         ];
     }
 }
