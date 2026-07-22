@@ -1,0 +1,1035 @@
+@extends('layouts.app')
+
+@section('content')
+<style>/* =====================================================
+   SPA BOOKING ADMIN DASHBOARD
+===================================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#f3f6fb;
+    font-family:'Poppins',sans-serif;
+    color:#374151;
+}
+
+/* =====================================================
+   CONTAINER
+===================================================== */
+
+.dashboard-container{
+    max-width:1400px;
+    margin:auto;
+    padding:35px;
+}
+
+/* =====================================================
+   HERO
+===================================================== */
+
+.hero{
+
+    background:linear-gradient(135deg,#0f766e,#16a085);
+
+    color:#fff;
+
+    border-radius:25px;
+
+    padding:50px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:35px;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.12);
+
+}
+
+.hero h1{
+
+    font-size:42px;
+
+    font-weight:700;
+
+    margin-bottom:12px;
+
+}
+
+.hero p{
+
+    font-size:18px;
+
+    opacity:.9;
+
+}
+
+.hero-icon{
+
+    font-size:90px;
+
+    opacity:.25;
+
+}
+
+/* =====================================================
+   STATISTICS
+===================================================== */
+
+.stats{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:25px;
+
+    margin-bottom:35px;
+
+}
+
+.card{
+
+    background:white;
+
+    border-radius:22px;
+
+    padding:28px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+
+    transition:.3s;
+
+}
+
+.card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 20px 40px rgba(0,0,0,.12);
+
+}
+
+.card-top{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.card-title{
+
+    color:#6b7280;
+
+    font-size:15px;
+
+}
+
+.card-number{
+
+    font-size:42px;
+
+    font-weight:bold;
+
+    color:#0f766e;
+
+    margin-top:15px;
+
+}
+
+.card-icon{
+
+    width:65px;
+
+    height:65px;
+
+    border-radius:18px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:#ecfdf5;
+
+    font-size:28px;
+
+}
+
+/* =====================================================
+   SECTION
+===================================================== */
+
+.section{
+
+    background:white;
+
+    border-radius:22px;
+
+    padding:30px;
+
+    margin-bottom:35px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+
+}
+
+.section-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:25px;
+
+}
+
+.section-title{
+
+    font-size:28px;
+
+    font-weight:bold;
+
+    color:#0f766e;
+
+}
+
+.section-subtitle{
+
+    color:#6b7280;
+
+    margin-top:5px;
+
+}
+
+/* =====================================================
+   CALENDAR
+===================================================== */
+
+#calendar{
+
+    margin-top:20px;
+
+}
+
+.fc{
+
+    font-family:'Poppins',sans-serif;
+
+}
+
+.fc-toolbar-title{
+
+    font-size:30px!important;
+
+    color:#0f766e;
+
+    font-weight:700;
+
+}
+
+.fc-button{
+
+    background:#0f766e!important;
+
+    border:none!important;
+
+    border-radius:12px!important;
+
+    padding:8px 18px!important;
+
+}
+
+.fc-button:hover{
+
+    background:#115e59!important;
+
+}
+
+.fc-event{
+
+    border:none!important;
+
+    border-radius:8px;
+
+    padding:3px;
+
+    font-weight:600;
+
+}
+
+.fc-daygrid-day:hover{
+
+    background:#f8fafc;
+
+}
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+.search{
+
+    width:300px;
+
+    height:45px;
+
+    border-radius:12px;
+
+    border:1px solid #d1d5db;
+
+    padding:0 15px;
+
+    outline:none;
+
+    transition:.3s;
+
+}
+
+.search:focus{
+
+    border-color:#0f766e;
+
+    box-shadow:0 0 10px rgba(15,118,110,.15);
+
+}
+
+/* =====================================================
+   TABLE
+===================================================== */
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+thead{
+
+    background:#0f766e;
+
+    color:white;
+
+}
+
+thead th{
+
+    padding:18px;
+
+    font-weight:600;
+
+    text-align:left;
+
+}
+
+tbody td{
+
+    padding:18px;
+
+    border-bottom:1px solid #eee;
+
+}
+
+tbody tr{
+
+    transition:.25s;
+
+}
+
+tbody tr:hover{
+
+    background:#f8fafc;
+
+}
+
+/* =====================================================
+   BADGES
+===================================================== */
+
+.badge{
+
+    padding:8px 18px;
+
+    border-radius:30px;
+
+    font-size:13px;
+
+    font-weight:bold;
+
+}
+
+.pending{
+
+    background:#FEF3C7;
+
+    color:#B45309;
+
+}
+
+.approved{
+
+    background:#DCFCE7;
+
+    color:#15803D;
+
+}
+
+.cancelled{
+
+    background:#FEE2E2;
+
+    color:#B91C1C;
+
+}
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.btn{
+
+    display:inline-block;
+
+    padding:10px 18px;
+
+    border-radius:10px;
+
+    text-decoration:none;
+
+    color:white;
+
+    transition:.3s;
+
+}
+
+.btn-edit{
+
+    background:#3B82F6;
+
+}
+
+.btn-edit:hover{
+
+    background:#2563EB;
+
+}
+
+.btn-delete{
+
+    background:#EF4444;
+
+    border:none;
+
+    cursor:pointer;
+
+}
+
+.btn-delete:hover{
+
+    background:#DC2626;
+
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:1200px){
+
+.stats{
+
+grid-template-columns:repeat(2,1fr);
+
+}
+
+}
+
+@media(max-width:768px){
+
+.dashboard-container{
+
+padding:20px;
+
+}
+
+.hero{
+
+flex-direction:column;
+
+text-align:center;
+
+gap:20px;
+
+}
+
+.stats{
+
+grid-template-columns:1fr;
+
+}
+
+.section-header{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+gap:15px;
+
+}
+
+.search{
+
+width:100%;
+
+}
+
+table{
+
+font-size:14px;
+
+}
+
+.service-title{
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+font-size:24px;
+
+color:#2c6e63;
+
+margin-bottom:18px;
+
+}
+
+}
+</style>
+
+<div class="dashboard-container">
+
+    <!-- HERO -->
+    <div class="hero">
+
+        <div>
+
+            <h1>Welcome Back, Admin 👋</h1>
+
+            <p>
+                Manage reservations, monitor bookings,
+                approve appointments and oversee your spa business.
+            </p>
+
+        </div>
+
+        <div class="hero-icon">
+            💆
+        </div>
+
+    </div>
+
+
+    <!-- STATISTICS -->
+
+    <div class="stats">
+
+        <!-- Bookings -->
+
+        <div class="card">
+
+            <div class="card-top">
+
+                <div>
+
+                    <div class="card-title">
+                        Total Bookings
+                    </div>
+
+                    <div class="card-number">
+                        {{ $totalBookings }}
+                    </div>
+
+                </div>
+
+                <div class="card-icon">
+                    📅
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Users -->
+
+        <div class="card">
+
+            <div class="card-top">
+
+                <div>
+
+                    <div class="card-title">
+                        Registered Users
+                    </div>
+
+                    <div class="card-number">
+                        {{ $totalUsers }}
+                    </div>
+
+                </div>
+
+                <div class="card-icon">
+                    👥
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Today -->
+
+        <div class="card">
+
+            <div class="card-top">
+
+                <div>
+
+                    <div class="card-title">
+                        Today's Bookings
+                    </div>
+
+                    <div class="card-number">
+
+                        {{ $bookings->where('booking_time','>=',now()->startOfDay())->count() }}
+
+                    </div>
+
+                </div>
+
+                <div class="card-icon">
+                    ⏰
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Pending -->
+
+        <div class="card">
+
+            <div class="card-top">
+
+                <div>
+
+                    <div class="card-title">
+                        Pending Approval
+                    </div>
+
+                    <div class="card-number">
+
+                        {{ $bookings->count() }}
+
+                    </div>
+
+                </div>
+
+                <div class="card-icon">
+                    📋
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- CALENDAR -->
+
+    <div class="section">
+
+        <div class="section-header">
+
+            <div>
+
+                <div class="section-title">
+
+                    Booking Calendar
+
+                </div>
+
+                <div class="section-subtitle">
+
+                    View and monitor all reservation schedules.
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div id="calendar"></div>
+
+    </div>
+
+
+
+ <!-- RESERVATION LIST -->
+
+<div class="section">
+
+    <div class="section-header">
+
+        <div>
+
+            <div class="section-title">
+                Reservation List
+            </div>
+
+            <div class="section-subtitle">
+                Manage all customer bookings.
+            </div>
+
+        </div>
+
+        <input
+            type="text"
+            id="searchInput"
+            class="search"
+            placeholder="Search customer...">
+
+    </div>
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>Customer</th>
+
+                <th>Booking ID</th>
+
+                <th>Service</th>
+
+                <th>Persons</th>
+
+                <th>Status</th>
+
+                <th width="180">Actions</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody id="bookingTable">
+
+        @foreach($bookings as $booking)
+
+            <tr>
+
+                <td>
+
+                    <strong>{{ $booking->customer_name }}</strong>
+
+                </td>
+
+                <td>
+
+                    {{ $booking->booking_id }}
+
+                </td>
+
+                <td>
+
+                    {{ $booking->event->event_name ?? 'No Service' }}
+
+                </td>
+
+                <td>
+
+                    {{ $booking->number_of_persons }}
+
+                </td>
+
+                <td>
+
+                    <span class="badge pending">
+
+                        Pending
+
+                    </span>
+
+                </td>
+
+                <td>
+
+                    <a href="{{ route('bookings.edit',$booking->id) }}"
+                       class="btn btn-edit">
+
+                        Edit
+
+                    </a>
+
+                    <form
+                        action="{{ route('bookings.destroy',$booking->id) }}"
+                        method="POST"
+                        style="display:inline;">
+
+                        @csrf
+                        @method('DELETE')
+
+                        <button
+                            onclick="return confirm('Delete this booking?')"
+                            class="btn btn-delete">
+
+                            Delete
+
+                        </button>
+
+                    </form>
+
+                </td>
+
+            </tr>
+
+        @endforeach
+
+        </tbody>
+
+    </table>
+
+</div>
+
+</div>
+
+@endsection
+
+
+@push('scripts')
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    //-----------------------------------
+    // FullCalendar
+    //-----------------------------------
+
+    let calendar = new FullCalendar.Calendar(
+        document.getElementById('calendar'),
+        {
+
+            initialView: 'dayGridMonth',
+
+            height: 720,
+
+            themeSystem: 'standard',
+
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek'
+            },
+
+            buttonText: {
+                today: 'Today',
+                month: 'Month',
+                week: 'Week'
+            },
+
+            events: [
+
+                @foreach($bookings as $booking)
+
+                {
+                    title: '{{ $booking->customer_name }}',
+
+                    start: '{{ \Carbon\Carbon::parse($booking->booking_time)->format("Y-m-d H:i:s") }}',
+
+                    backgroundColor: '#0f766e',
+
+                    borderColor: '#0f766e',
+
+                    extendedProps: {
+
+                        bookingID: '{{ $booking->booking_id }}',
+
+                        eventName: '{{ $booking->event->event_name ?? "No Event" }}',
+
+                        persons: '{{ $booking->number_of_persons }}',
+
+                        date: '{{ \Carbon\Carbon::parse($booking->booking_time)->format("F d, Y h:i A") }}'
+
+                    }
+
+                },
+
+                @endforeach
+
+            ],
+
+            eventClick:function(info){
+
+                Swal.fire({
+
+                    icon:'info',
+
+                    title:info.event.title,
+
+                    html:
+                    "<table style='width:100%;text-align:left'>" +
+
+                    "<tr><td><b>Booking ID</b></td><td>"+info.event.extendedProps.bookingID+"</td></tr>" +
+
+                    "<tr><td><b>Service</b></td><td>"+info.event.extendedProps.eventName+"</td></tr>" +
+
+                    "<tr><td><b>Persons</b></td><td>"+info.event.extendedProps.persons+"</td></tr>" +
+
+                    "<tr><td><b>Date</b></td><td>"+info.event.extendedProps.date+"</td></tr>" +
+
+                    "</table>",
+
+                    confirmButtonColor:"#0f766e"
+
+                });
+
+            }
+
+        });
+
+    calendar.render();
+
+
+    //-----------------------------------
+    // Live Search
+    //-----------------------------------
+
+    const search = document.getElementById("searchInput");
+
+    search.addEventListener("keyup",function(){
+
+        let value = this.value.toLowerCase();
+
+        let rows = document.querySelectorAll("#bookingTable tr");
+
+        rows.forEach(function(row){
+
+            row.style.display =
+                row.innerText.toLowerCase().includes(value)
+                ? ""
+                : "none";
+
+        });
+
+    });
+
+});
+</script>
+
+<style>
+
+/* Calendar */
+
+.fc{
+
+    font-family:'Poppins',sans-serif;
+
+}
+
+.fc-toolbar-title{
+
+    font-size:30px !important;
+
+    font-weight:700;
+
+    color:#0f766e;
+
+}
+
+.fc-button{
+
+    background:#0f766e !important;
+
+    border:none !important;
+
+    border-radius:10px !important;
+
+    padding:8px 18px !important;
+
+    transition:.3s;
+
+}
+
+.fc-button:hover{
+
+    background:#115e59 !important;
+
+}
+
+.fc-daygrid-day-number{
+
+    color:#374151;
+
+    font-weight:600;
+
+}
+
+.fc-daygrid-day:hover{
+
+    background:#f8fafc;
+
+}
+
+.fc-event{
+
+    border:none;
+
+    border-radius:8px;
+
+    padding:3px;
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+
+.fc-scrollgrid{
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+}
+
+.fc-theme-standard td,
+.fc-theme-standard th{
+
+    border-color:#e5e7eb;
+
+}
+
+</style>
+
+@endpush
