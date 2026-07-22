@@ -1,16 +1,29 @@
 <?php
 
-namespace Database\Seeders;
+namespace Database\Factories;
 
-use Illuminate\Database\Seeder;
+use App\Models\Booking;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-class DatabaseSeeder extends Seeder
+/**
+ * @extends Factory<Booking>
+ */
+class BookingFactory extends Factory
 {
-    public function run(): void
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition(): array
     {
-        $this->call([
-            EventSeeder::class,
-            BookingSeeder::class,
-        ]);
+        return [
+            'event_id' => \App\Models\Event::factory(),
+            'customer_name' => fake()->name(),
+            'booking_id' => strtoupper(fake()->bothify('BK####')),
+            'number_of_persons' => fake()->numberBetween(1, 20),
+            'confirmation_file' => 'sample.pdf',
+            'booking_time' => fake()->dateTime(),
+        ];
     }
 }
