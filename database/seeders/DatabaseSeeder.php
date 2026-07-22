@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             'role' => 'user',
         ]);
 
+
         $this->call([
             EventSeeder::class,
             BookingSeeder::class,
